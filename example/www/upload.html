@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+    <link rel="stylesheet" href="/css/mvp.css">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-upload {
+            border: 1px solid #000;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .file-upload:hover {
+            background-color: #f0f0f0;
+        }
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        .log-section {
+            background: #de;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .log-section h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <center> <h1>File Upload</h1> </center>
+        <form action="/cgi-bin/upload.cgi" method="post" enctype="multipart/form-data">
+            <div class="file-upload" id="file-upload">
+                <input type="file" name="file1" id="file1" onchange="updateFileName()">
+                <p id="file-upload-text">Drag and drop or click</p>
+            </div>
+            <center> <input type="submit" value="Upload"> </center>
+        </form>
+        <div class="log-section">
+            <h2>Log</h2>
+            <div id="status"><pre>No entries</pre></div>
+        </div>
+    </div>
+
+    <script>
+        const fileUpload = document.getElementById('file-upload');
+        const fileInput = document.getElementById('file1');
+        const fileUploadText = document.getElementById('file-upload-text');
+
+        // Simulate a click on the file input when the file upload area is clicked
+        fileUpload.addEventListener('click', () => fileInput.click());
+
+        // Change background color when dragging over the file upload area
+        fileUpload.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            fileUpload.style.backgroundColor = '#e0e0e0';
+        });
+
+        // Reset background color when leaving the file upload area
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.style.backgroundColor = '';
+        });
+
+        // Handle file drop
+        fileUpload.addEventListener('drop', (event) => {
+            event.preventDefault();
+            fileUpload.style.backgroundColor = '';
+            fileInput.files = event.dataTransfer.files;
+            updateFileName();
+        });
+
+        // Update the file upload text with the selected file name
+        function updateFileName() {
+            const files = fileInput.files;
+            if (files.length > 0) {
+                const fileName = files[0].name;
+                fileUploadText.textContent = `Selected file: ${fileName}`;
+            } else {
+                fileUploadText.textContent = 'Drag and drop or click';
+            }
+        }
+
+        // Handle form submission
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch('/cgi-bin/upload.cgi', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => document.getElementById('status').innerHTML = '<pre>' + text + '</pre>')
+            .catch(error => document.getElementById('status').innerHTML = '<pre>Error: ' + error + '</pre>');
+        });
+    </script>
+</body>
+</html>
