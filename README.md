@@ -18,8 +18,8 @@ BusyBox Web Server is a lightweight web server image that uses the BusyBox HTTP 
 ### Installation and execution
 
 ```
-git clone https://github.com/xsPQ/bb-webserver.git
-cd bb-webserver
-docker build -t bb-webserver .
-docker run -d -p 80:80 --name bb-webserver -e EXAMPLE=true bb-webserver
+git clone https://github.com/xsPQ/PunyWebStack.git
+cd PunyWebStack
+docker build -t PunyWebStack .
+docker run -d -p 80:80 --name PunyWebStack -e EXAMPLE=true PunyWebStack
 ```
