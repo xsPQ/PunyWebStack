@@ -27,6 +27,6 @@ For god's sake please don't use this somewhere productive.
 ```
 git clone https://github.com/xsPQ/PunyWebStack.git
 cd PunyWebStack
-docker build -t PunyWebStack .
-docker run -d -p 80:80 --name PunyWebStack -e EXAMPLE=true PunyWebStack
+docker build -t pws .
+docker run -d -p 80:80 --name PunyWebStack -e EXAMPLE=true pws
 ```
