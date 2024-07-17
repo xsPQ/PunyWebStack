@@ -25,6 +25,7 @@ IFS=""
 while read -r line; do
     if echo "$line" | grep -q "filename="; then
         filename=$(echo "$line" | sed 's/.*filename="\([^"]*\)".*/\1/')
+        echo "Filename: $filename" >> "$logfile"
     fi
     test x"$line" = x"" && break
     test x"$line" = x"$CR" && break
@@ -33,14 +34,18 @@ done
 # Create a temporary file to store the uploaded content
 tempfile=$(mktemp)
 cat >"$tempfile"
+echo "Temporary file created: $tempfile" >> "$logfile"
 
 # Calculate the length of the delimiter and the end marker
 tail_len=$((${#delim_line} + 6))
+echo "Delimiter length: $tail_len" >> "$logfile"
 
 # Check the file size
 filesize=$(stat -c"%s" "$tempfile")
+echo "File size: $filesize" >> "$logfile"
 if [ "$filesize" -lt "$tail_len" ]; then
     printf "<html><body><pre>File too small or corrupt</pre></body></html>"
+    echo "Error: File too small or corrupt" >> "$logfile"
     rm "$tempfile"
     exit 1
 fi
@@ -50,6 +55,7 @@ dd if="$tempfile" skip=$((filesize - tail_len)) bs=1 count=1000 >"$tempfile.tail
 printf "\r\n%s--\r\n" "$delim_line" >"$tempfile.tail.expected"
 if ! diff -q "$tempfile.tail" "$tempfile.tail.expected" >/dev/null; then
     printf "<html><body><pre>Malformed file upload</pre></body></html>"
+    echo "Error: Malformed file upload" >> "$logfile"
     rm "$tempfile" "$tempfile.tail" "$tempfile.tail.expected"
     exit 1
 fi
@@ -60,10 +66,13 @@ dd of="$tempfile" seek=$((filesize - tail_len)) bs=1 count=0 >/dev/null 2>/dev/n
 
 # Target path for the uploaded file
 targetfile="$upload_dir/$filename.up"
+echo "Target file: $targetfile" >> "$logfile"
 
 # Move the file and remove the postfix
 mv "$tempfile" "$targetfile"
 mv "$targetfile" "${targetfile%.up}"
+finalfile="${targetfile%.up}"
+echo "Final file: $finalfile" >> "$logfile"
 
 # Add timestamp and write message to log file
 timestamp=$(date '+%Y-%m-%d - %H:%M:%S')
