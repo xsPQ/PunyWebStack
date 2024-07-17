@@ -19,10 +19,13 @@ ADD ./example/www/index.html /example/www/index.html
 ADD ./example/www/404.html /example/www/404.html
 ADD ./example/www/css/mvp.css /example/www/css/mvp.css
 ADD ./example/www/upload.html /example/www/upload.html
+ADD ./example/www/upload_api.html /example/www/upload_api.html
+
 
 # Add CGI scripts
 ADD ./example/www/cgi-bin/upload.cgi /example/www/cgi-bin/upload.cgi
 ADD ./example/www/cgi-bin/print-env.cgi /example/www/cgi-bin/print-env.cgi
+ADD ./example/www/cgi-bin/upload_api.cgi /example/www/cgi-bin/upload_api.cgi
 RUN chmod +x /example/www/cgi-bin/upload.cgi /example/www/cgi-bin/print-env.cgi
 
 # Add example httpd.conf

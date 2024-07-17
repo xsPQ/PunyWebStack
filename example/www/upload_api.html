@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload API Documentation</title>
+    <link rel="stylesheet" href="/css/mvp.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload API Documentation</h1>
+        <p>This API allows you to upload a file to a specified path within the <code>/www</code> directory.</p>
+
+        <h2>API Endpoint</h2>
+        <p><code>/cgi-bin/upload_api.cgi</code></p>
+
+        <h2>Parameters</h2>
+        <ul>
+            <li><strong>file</strong> (required): The file to be uploaded.</li>
+            <li><strong>path</strong> (required): The absolute path where the file should be saved (starting from <code>/www</code>).</li>
+        </ul>
+
+        <h2>Example Request</h2>
+        <pre><code>curl -F "file=@/path/to/your/file.txt" -F "path=/www/uploaded_file.txt" http://your-server/cgi-bin/upload_api.cgi</code></pre>
+
+        <h2>Example Request with Basic Authentication</h2>
+        <pre><code>curl -u admin:password -F "file=@/path/to/your/file.txt" -F "path=/www/uploaded_file.txt" http://your-server/cgi-bin/upload_api.cgi</code></pre>
+
+        <h2>Response</h2>
+        <p>The response will include a log of the upload process.</p>
+    </div>
+</body>
+</html>
