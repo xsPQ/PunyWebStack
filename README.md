@@ -6,7 +6,7 @@ PunyWebStack is a puny (but lightweight) web stack that uses the BusyBox HTTP da
 ## !!!
 
 Now that I have this repo public:
-For god's sake please don't use this somewhere productive.
+For god's sake please don't use this somewhere (productive).
 
 
 ## Features
